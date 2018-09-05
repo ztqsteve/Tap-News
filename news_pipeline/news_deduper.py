@@ -48,10 +48,10 @@ def handle_message(msg):
         documents.insert(0, text)
 
         # Calculate similarity matrix
-        tfidf = TfidfVectorizer().fit_transform(documents)
+        tfidf = TfidfVectorizer(stop_words = "english").fit_transform(documents)
         pairwise_sim = tfidf * tfidf.T
 
-        print(pairwise_sim)
+        print(pairwise_sim.A)
 
         rows, _ = pairwise_sim.shape
 
@@ -61,8 +61,8 @@ def handle_message(msg):
                 print 'Duplicated news, ignore.'
                 return
 
-        task['publishedAt'] = parser.parse(task['publishedAt'])
-        db[NEWS_TABLE_NAME].replace_one({'digest': task['digest']}, task, upsert=True)
+    task['publishedAt'] = parser.parse(task['publishedAt'])
+    db[NEWS_TABLE_NAME].replace_one({'digest': task['digest']}, task, upsert=True)
 
 while True:
     if cloudAMQP_client is not None:

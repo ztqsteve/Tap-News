@@ -11,7 +11,6 @@ GET_CNN_NEWS_XPATH = '''//div[@class='zn-body__paragraph']//text() |
 
 # Load user agents
 USER_AGENTS_FILE = os.path.dirname(os.path.abspath(__file__)) + '/user_agents.txt'
-print USER_AGENTS_FILE
 USER_AGENTS = []
 
 

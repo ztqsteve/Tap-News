@@ -18,7 +18,22 @@ NEWS_TIME_OUT_IN_SECONDS = 3600 * 24
 SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://hzileycx:iJgtzvRMYnzkdFGSdUYSytpAsW6FYnT_@chimpanzee.rmq.cloudamqp.com/hzileycx"
 SCRAPE_NEWS_TASK_QUEUE_NAME = 'tap-news-scrape-news-task-queue'
 
-NEWS_SOURCES = 'cnn,bbc-news,bloomberg,espn,nbc-news,techcrunch,the-verge,the-wall-street-journal,the-new-york-times'
+def concatSources(sourcesList):
+    return ','.join(sourcesList)
+NEWS_SOURCES = concatSources(['cnn',
+                              'bbc-news',
+                              'bloomberg',
+                              'espn',
+                              'nbc-news',
+                              'techcrunch',
+                              'the-verge',
+                              'the-wall-street-journal',
+                              'the-new-york-times',
+                              'abc-news',
+                              'daily-mail',
+                              'fox-sports',
+                              'the-washington-post'])
+print(NEWS_SOURCES)
 
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
 cloudAMQP_client = CloudAMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, SCRAPE_NEWS_TASK_QUEUE_NAME)
