@@ -1,3 +1,4 @@
+var bodyParser = require('body-parser');
 var cors = require('cors');
 var createError = require('http-errors');
 var express = require('express');
@@ -15,6 +16,7 @@ app.set('views', path.join(__dirname, '../client/build/'));
 app.set('view engine', 'jade');
 app.use('/static', express.static(path.join(__dirname, '../client/build/static/')));
 
+app.use(bodyParser.json());
 //TODO: remove this after development is done
 app.use(cors());
 

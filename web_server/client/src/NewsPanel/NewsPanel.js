@@ -51,6 +51,7 @@ class NewsPanel extends React.Component{
         </a>
       );
     });
+    
       return (
         <div className='container-fluid'>
           <div className='list-group'>

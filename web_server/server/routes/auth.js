@@ -2,10 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const validator = require('validator');
-var bodyParser = require('body-parser');
-var jsonParser = bodyParser.json();
 
-router.post('/signup',jsonParser, (req, res, next) => {
+
+router.post('/signup', (req, res, next) => {
   const validationResult = validateSignupForm(req.body);
   if (!validationResult.success) {
     console.log('validationResult failed');
@@ -16,7 +15,7 @@ router.post('/signup',jsonParser, (req, res, next) => {
     });
   }
 
-  return passport.authenticate('local-signup', (err) => {
+  return passport.authenticate('local-signup', err => {
     if (err) {
       console.log(err);
       if (err.name === 'MongoError' && err.code === 11000) {
@@ -44,7 +43,7 @@ router.post('/signup',jsonParser, (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/login', jsonParser, (req, res, next) => {
+router.post('/login', (req, res, next) => {
   const validationResult = validateLoginForm(req.body);
   if (!validationResult.success) {
     return res.status(400).json({
