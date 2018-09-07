@@ -13,23 +13,24 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
 import mongodb_client
 # import news_recommendation_service_client
 #
-# from cloudAMQP_client import CloudAMQPClient
+from cloudAMQP_client import CloudAMQPClient
 
 NEWS_LIST_BATCH_SIZE = 10
 NEWS_LIMIT = 150
 USER_NEWS_TIME_OUT_IN_SECONDS = 60
 
-NEWS_TABLE_NAME = "news"
+NEWS_TABLE_NAME = 'news'
+CLICK_LOGS_TABLE_NAME = 'click_logs'
 
-REDIS_HOST = "localhost"
+REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT, db=0)
 
 
-# LOG_CLICKS_TASK_QUEUE_URL = "amqp://lfwogwnt:NNagiowONx8Yh2sVeDZ481fBXllQfu4z@wombat.rmq.cloudamqp.com/lfwogwnt"
-# LOG_CLICKS_TASK_QUEUE_NAME = "tap-news-log-clicks-task-queue"
-# cloudAMQP_client = CloudAMQPClient(LOG_CLICKS_TASK_QUEUE_URL, LOG_CLICKS_TASK_QUEUE_NAME)
+LOG_CLICKS_TASK_QUEUE_URL = "amqp://pbsoegxa:ybQrjx9SwAVY5Icb083qQu0dJQ8IkIK7@chimpanzee.rmq.cloudamqp.com/pbsoegxa"
+LOG_CLICKS_TASK_QUEUE_NAME = "tap-news-log-clicks-task-queue"
+cloudAMQP_client = CloudAMQPClient(LOG_CLICKS_TASK_QUEUE_URL, LOG_CLICKS_TASK_QUEUE_NAME)
 
 def getOneNews():
     db = mongodb_client.get_db()
@@ -77,7 +78,11 @@ def getNewsSummariesForUser(user_id, page_num):
     return json.loads(dumps(sliced_news))
 
 def logNewsClickForUser(user_id, news_id):
-    message = {'userId': user_id, 'newsId': news_id, 'timestamp': str(datetime.utcnow())}
+    message = {'userId': user_id, 'newsId': news_id, 'timestamp': datetime.utcnow()}
 
-    # Send log task to click log processor
+    db = mongodb_client.get_db()
+    db[CLICK_LOGS_TABLE_NAME].insert(message)
+
+    # Send log task to machine learning service for prediction
+    message = {'userId': user_id, 'newsId': news_id, 'timestamp': str(datetime.utcnow())}
     cloudAMQP_client.sendMessage(message)
