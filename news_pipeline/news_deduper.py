@@ -11,6 +11,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
 
 import mongodb_client
+import news_topic_modeling_service_client
+
 from cloudAMQP_client import CloudAMQPClient
 
 DEDUPE_NEWS_TASK_QUEUE_URL = "amqp://xzbggvzn:jFOMw3MZ6hzq0htegQTkG2S7fQsrNby1@chimpanzee.rmq.cloudamqp.com/xzbggvzn"
@@ -48,7 +50,7 @@ def handle_message(msg):
         documents.insert(0, text)
 
         # Calculate similarity matrix
-        tfidf = TfidfVectorizer(stop_words = "english").fit_transform(documents)
+        tfidf = TfidfVectorizer().fit_transform(documents)
         pairwise_sim = tfidf * tfidf.T
 
         print(pairwise_sim.A)
@@ -62,6 +64,13 @@ def handle_message(msg):
                 return
 
     task['publishedAt'] = parser.parse(task['publishedAt'])
+
+    #  # Classify news
+    # title = task['title']
+    # if title is not None:
+    #     topic = news_topic_modeling_service_client.classify(title)
+    #     task['class'] = topic
+
     db[NEWS_TABLE_NAME].replace_one({'digest': task['digest']}, task, upsert=True)
 
 while True:
