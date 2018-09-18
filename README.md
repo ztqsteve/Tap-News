@@ -12,3 +12,5 @@ The news topic classification is implemented by Convolutional Neutral Nework(CNN
 
 ### News Recommendation
 I built a click log processor to implement a time decay model. If a news topic is clicked, p = (1-α)p + α, if not, p = (1-α)p, Where p is the selection probability, and α is the degree of weight decrease. The result of this is that the nth most recent selection will have a weight of (1-α)^n. Using a coefficient value of 0.05 as an example, the 10th most recent selection would only have half the weight of the most recent. Increasing α would bias towards more recent results more.
+
+When some news' topic with the most probability for that user, the webpage will show a "Recommend" tag to the user.
