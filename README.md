@@ -1,6 +1,6 @@
 # Tap News
 ## Overview
-This is a real-time news scraping and recommendation system. I built a news pipeline to scraping real-time latest news from a bunch of news source such as CNN, BBC, ESPN and TechCrunch. Created a single-page web application to show the news to users, and recommend news to users based on users' click behavior on different news topic. 
+This is a real-time news scraping and recommendation system. I built a news pipeline to scraping real-time latest news from a bunch of news source such as CNN, BBC, ESPN and TechCrunch. Created a single-page web application to show the news to users, and recommend news to users based on users' click behavior on different news topics. 
 ## Architecture
 <img src="tap-news-architecture.png" />
 
