@@ -11,5 +11,4 @@ News pipeline is composed by news monitor, web scraper and news deduper, news is
 The news topic classification is implemented by Convolutional Neutral Nework(CNN) in TensorFlow and deployed online using the offline trained model. Manually label the news with 17 classes: `Colleges & Schools`, `Environmental`, `World`, `Entertainment`, `Media`, `Politics & Government`, `Regional News`, `Religion`, `Sports`, `Technology`, `Traffic`, `Weather`, `Economic & Corp`, `Advertisements`, `Crime`, `Magazine`, `Other`.
 
 ### News Recommendation
-I built a click log processor to implement a time decay model. If a news topic is clicked, the probability p=(1-alpha)p + alpha
-
+I built a click log processor to implement a time decay model. If a news topic is clicked, p = (1-α)p + α, if not, p = (1-α)p, Where p is the selection probability, and α is the degree of weight decrease. The result of this is that the nth most recent selection will have a weight of (1-α)^n. Using a coefficient value of 0.05 as an example, the 10th most recent selection would only have half the weight of the most recent. Increasing α would bias towards more recent results more.
