@@ -5,12 +5,7 @@ SERVER_HOST = 'localhost'
 SERVER_PORT = 4040
 
 class RequestHandler(pyjsonrpc.HttpRequestHandler):
-    """ Test method """
-    @pyjsonrpc.rpcmethod
-    def add(self, a, b):
-        print('add is called with {} and {}'.format(a, b))
-        return a + b
-
+    
     @pyjsonrpc.rpcmethod
     def getNewsSummariesForUser(self, user_id, page_num):
         return operations.getNewsSummariesForUser(user_id, page_num)
